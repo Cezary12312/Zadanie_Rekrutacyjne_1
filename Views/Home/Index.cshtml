@@ -1,0 +1,71 @@
+﻿@model IEnumerable<User>
+
+@{
+    ViewData["Title"] = "Notatnik Użytkowników";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <div class="container">
+<div class="container p-4">
+    <div class="row p-3">
+        <div class="col-6">
+            <h2 class="text-primary">UŻYTKOWNICY</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a class="btn btn-primary" asp-action="CreateUpdate" asp-controller="Home">Dodaj użytkownika</a>
+        </div>
+    </div>
+</div>
+<table class="table table-bordered table-striped" style="width:100%">
+        <tr>
+            <th>Imie</th>
+            <th>Nazwisko</th>
+            <th>Data narodzin</th>
+            <th>Płeć</th>
+            <th>Pokaż dodatkowe atrybuty</th>
+            <th>Edytuj użytkownika</th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a class="btn" asp-action="CreateUpdate" asp-controller="Home" asp-route-id="@item.Id">@item.Name</a>
+                </td>
+                <td>
+                    <a class="btn" asp-action="CreateUpdate" asp-controller="Home" asp-route-id="@item.Id">@item.LastName</a>
+                </td>
+                <td>@item.DateOfBirth</td>
+                <td>@item.Gender.GenderName</td>
+                    <td>
+                        <select asp-for="@item.AdditionalAttributes">
+                            @foreach(var add in item.AdditionalAttributes)
+                            {
+                                <option value="Active">@add.AttributeName - @add.AttributeValue</option>
+                            }
+                        </select>
+                    </td>
+                <td class="group">
+                    <a asp-action="CreateUpdate" asp-controller="Home" asp-route-id="@item.Id">
+                        <i class="bi bi-pencil-square"></i>
+                        Edytuj
+                    </a>
+                </td>
+            </tr>
+        }
+</table>
+</div>
+<div> 
+    <a class="btn btn-primary" asp-action="ExportToPdf" asp-controller="Home">Raport PDF</a>
+    <a class="btn btn-success" asp-action="ExportToExcel" asp-controller="Home">Raport Excel</a>
+    <a class="btn btn-dark" asp-action="ExportToXML" asp-controller="Home">Raport XML</a>
+    <a class="btn btn-danger" asp-action="ExportToTxt" asp-controller="Home">Raport Text</a>
+</div>
+</body>
+</html>
